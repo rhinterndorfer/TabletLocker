@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ButtonHandler.Native
+namespace TabletLocker.Native
 {
     public enum HookType : uint
     {

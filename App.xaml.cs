@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
 
-namespace PowerButtonHandler
+namespace TabletLocker
 {
     /// <summary>
     /// Interaction logic for App.xaml

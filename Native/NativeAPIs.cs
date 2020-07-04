@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace ButtonHandler.Native
+namespace TabletLocker.Native
 {
     public class NativeAPIs
     {

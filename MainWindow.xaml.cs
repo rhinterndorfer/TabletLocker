@@ -13,11 +13,11 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Runtime.InteropServices;
-using ButtonHandler.Native;
+using TabletLocker.Native;
 using System.Windows.Interop;
 using Microsoft.Win32;
 
-namespace PowerButtonHandler
+namespace TabletLocker
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -35,48 +35,8 @@ namespace PowerButtonHandler
 
         }
 
-        private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
-        {
-            try
-            {
-                WMType msgType = (WMType)msg;
-            }
-            catch { }
-
-            if (msg == (int)WMType.POWERBROADCAST && wParam.ToInt32() == NativeAPIs.PBT_POWERSETTINGCHANGE)
-            {
-                // Extract data from message
-                NativeAPIs.POWERBROADCAST_SETTING ps =
-                 (NativeAPIs.POWERBROADCAST_SETTING)Marshal.PtrToStructure(
-                     lParam, typeof(NativeAPIs.POWERBROADCAST_SETTING));
-                
-                if(ps.PowerSetting == NativeAPIs.GUID_MONITOR_POWER_ON)
-                {
-                    Int32 iData = (Int32)ps.Data;
-                    if(iData == 0)
-                        nativeService.CurrentMonitorState = MonitorState.MonitorStateOff;
-                    if (iData == 1)
-                        nativeService.CurrentMonitorState = MonitorState.MonitorStateOn;
-                }
-                
-            }
-
-            return IntPtr.Zero;
-        }
-
-
-        private void RegisterForPowerNotifications(IntPtr hwnd)
-        {
-            IntPtr hMonitorOn = NativeAPIs.RegisterPowerSettingNotification(hwnd,
-                ref NativeAPIs.GUID_MONITOR_POWER_ON,
-                NativeAPIs.DEVICE_NOTIFY_WINDOW_HANDLE);
-        }
-
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            //HwndSource source = PresentationSource.FromVisual(this) as HwndSource;
-            //source.AddHook(WndProc);
-            //RegisterForPowerNotifications(source.Handle);
 
             nativeService = new NativeService();
             procHook = (nCode, wParam, lParam) =>
@@ -130,9 +90,6 @@ namespace PowerButtonHandler
 
         private void Window_Unloaded(object sender, RoutedEventArgs e)
         {
-            //HwndSource source = PresentationSource.FromVisual(this) as HwndSource;
-            //source.RemoveHook(WndProc);
-
             nativeService.ClearHook(handleKeyboardHook);
             nativeService.ClearHook(handleMouseHook);
             nativeService.EnableStandby();

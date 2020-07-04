@@ -4,9 +4,9 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Interop;
-using ButtonHandler.Native;
+using TabletLocker.Native;
 
-namespace ButtonHandler.Native
+namespace TabletLocker.Native
 {
     public class NativeService
     {
